@@ -10,22 +10,13 @@
 
 #include "motor_manage.h"
 #include "iksolver.h"
+#include "pid.h"
 
 // Varible used for Noetic Pi input to STM32
 double_t speed_linear = 0, speed_angular = 0, v_L = 0, v_R = 0, dutycy1 = 0, dutycy2 = 0;
 
 // Varible used for STM32 output to Noetic Pi
 long encoder_value_m1 = 0, encoder_value_m1_p = 0, encoder_value_m2 = 0, encoder_value_m2_p = 0;
-
-// Variable used for PID control
-double_t speed_err_L = 0, speed_err_R = 0;
-double_t p_error_L = 0, p_error_R = 0;
-double_t error_i_L = 0, error_i_R = 0;
-
-// Define constant, PID controller gain value
-#define k_p 0.5
-#define k_i 0.2
-#define k_d 0.3
 
 // Define constant, robot specification related
 #define r_diameter 0.46
@@ -123,35 +114,6 @@ void cmd_vel_msg(const geometry_msgs::Twist& msg)
 
 // ROS cmd_vel Subscriber
 ros::Subscriber<geometry_msgs::Twist> velocity_sub("/cmd_vel", &cmd_vel_msg);
-
-// PID base calculate
-// p_error is a pointer variable that can be return latest value
-double_t pidbase(double_t target, double_t mers, char flag)
-{
-	// Varible used for PID control
-	double_t error = 0, p_error = 0, error_i = 0, error_d = 0, speed = 0;
-	
-	// Proportional
-	error = target - mers;
-	
-	// Integral
-	flag == 'L' ? error_i = error_i_L : error_i = error_i_R;
-	error_i = error_i + error;
-	if ((error == 0) || (abs(error) >= 40))
-		error_i = 0;
-	flag == 'L' ? error_i_L = error_i : error_i_R = error_i;
-	
-	// Derivative
-	flag == 'L' ? p_error = p_error_L : p_error = p_error_R;
-	error_d = error - p_error;
-	
-	p_error = error;
-	flag == 'L' ? p_error_L = p_error : p_error_R = p_error;
-	
-	speed = k_p * error + k_i * error_i + k_d * error_d;
-	
-	return speed;
-}
 
 void setup(void)
 {
