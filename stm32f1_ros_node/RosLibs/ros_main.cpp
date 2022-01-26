@@ -20,7 +20,7 @@ long encoder_value_m1 = 0, encoder_value_m1_p = 0, encoder_value_m2 = 0, encoder
 // Variable used for PID control
 double_t speed_err_L = 0, speed_err_R = 0;
 double_t p_error_L = 0, p_error_R = 0;
-double_t error_i_L = 0, error_i_R;
+double_t error_i_L = 0, error_i_R = 0;
 
 // Define constant, PID controller gain value
 #define k_p 0.5
@@ -29,7 +29,7 @@ double_t error_i_L = 0, error_i_R;
 
 // Define constant, robot specification related
 #define r_diameter 0.46
-#define speed_max 100
+#define speed_max 5
 #define max_ctr_period 3600
 
 // Extern peripherals
