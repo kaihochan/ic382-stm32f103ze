@@ -340,7 +340,7 @@
               <Define>USE_HAL_DRIVER,STM32F103xE,__USE_C99_MATH 
 </Define>
               <Undefine></Undefine>
-              <IncludePath>../Core/Inc;                                    ../Drivers/STM32F1xx_HAL_Driver/Inc;                                    ../Drivers/STM32F1xx_HAL_Driver/Inc/Legacy;                                    ../Drivers/CMSIS/Device/ST/STM32F1xx/Include;                                    ../Drivers/CMSIS/Include;                                    ..\RosLibs;               ../USB_DEVICE/App;               ../USB_DEVICE/Target;               ../Middlewares/ST/STM32_USB_Device_Library/Core/Inc;               ../Middlewares/ST/STM32_USB_Device_Library/Class/CDC/Inc</IncludePath>
+              <IncludePath>../Core/Inc;                                        ../Drivers/STM32F1xx_HAL_Driver/Inc;                                        ../Drivers/STM32F1xx_HAL_Driver/Inc/Legacy;                                        ../Drivers/CMSIS/Device/ST/STM32F1xx/Include;                                        ../Drivers/CMSIS/Include;                                        ..\RosLibs;                   ../USB_DEVICE/App;                   ../USB_DEVICE/Target;                   ../Middlewares/ST/STM32_USB_Device_Library/Core/Inc;                   ../Middlewares/ST/STM32_USB_Device_Library/Class/CDC/Inc</IncludePath>
             </VariousControls>
           </Cads>
           <Aads>
@@ -739,6 +739,11 @@
               <FilePath>..\RosLibs\time.cpp</FilePath>
             </File>
             <File>
+              <FileName>pid_base.cpp</FileName>
+              <FileType>8</FileType>
+              <FilePath>..\RosLibs\pid_base.cpp</FilePath>
+            </File>
+            <File>
               <FileName>motor_manage.h</FileName>
               <FileType>5</FileType>
               <FilePath>..\Core\Inc\motor_manage.h</FilePath>
@@ -747,6 +752,11 @@
               <FileName>iksolver.h</FileName>
               <FileType>5</FileType>
               <FilePath>..\Core\Inc\iksolver.h</FilePath>
+            </File>
+            <File>
+              <FileName>pid.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>..\RosLibs\pid.h</FilePath>
             </File>
           </Files>
         </Group>

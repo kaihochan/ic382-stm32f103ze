@@ -70,3 +70,4 @@ stm32f1_ros_node\ros_main.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\utility
 stm32f1_ros_node\ros_main.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\rw/_defs.h
 stm32f1_ros_node\ros_main.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\rw/_config.h
 stm32f1_ros_node\ros_main.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\rw/config.h
+stm32f1_ros_node\ros_main.o: ..\RosLibs\pid.h

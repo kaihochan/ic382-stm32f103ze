@@ -9,6 +9,7 @@ extern TIM_HandleTypeDef htim1;
 extern TIM_HandleTypeDef htim3;
 extern TIM_HandleTypeDef htim4;
 extern TIM_HandleTypeDef htim5;
+extern TIM_HandleTypeDef htim8;
 
 /*** User defined variables ***/
 const int max_register_value = 3600;

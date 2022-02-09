@@ -25,7 +25,6 @@ long encoder_value_m1 = 0, encoder_value_m1_p = 0, encoder_value_m2 = 0, encoder
 
 // Extern peripherals
 extern IWDG_HandleTypeDef hiwdg;
-extern TIM_HandleTypeDef htim8;
 
 // ROS Node Handler
 ros::NodeHandle nh;

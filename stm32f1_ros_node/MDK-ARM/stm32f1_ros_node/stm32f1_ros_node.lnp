@@ -25,6 +25,7 @@
 "stm32f1_ros_node\duration.o"
 "stm32f1_ros_node\ros_main.o"
 "stm32f1_ros_node\time.o"
+"stm32f1_ros_node\pid_base.o"
 "stm32f1_ros_node\usb_device.o"
 "stm32f1_ros_node\usbd_desc.o"
 "stm32f1_ros_node\usbd_cdc_if.o"
