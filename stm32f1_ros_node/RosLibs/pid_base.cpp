@@ -1,5 +1,10 @@
 #include "pid.h"
 
+// Variable used for PID control
+double_t speed_err_L = 0, speed_err_R = 0;
+double_t p_error_L = 0, p_error_R = 0;
+double_t error_i_L = 0, error_i_R = 0;
+
 // PID base calculate
 // p_error is a pointer variable that can be return latest value
 double_t pidbase(double_t target, double_t mers, char flag)
