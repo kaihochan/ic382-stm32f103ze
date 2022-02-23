@@ -34,18 +34,35 @@ goal = Point()
 goal.x = 5
 goal.y = 5
 
+turning = False
+
 while not rospy.is_shutdown():
     inc_x = goal.x -x
     inc_y = goal.y -y
 
     angle_to_goal = atan2(inc_y, inc_x)
 
+    if inc_x != 0:
+        speed.linear.x = 0.1
+    elif (inc_x = 0) & (inc_y != 0) & (turning = True):
+        speed.linear.x = 0.1
+    elif (inc_x = 0) & (inc_y != 0) & (turning = False):
+        speed.linear.x = 0
+        while abs(angle_to_goal - theta) > 0.1:
+            speed.angular.z = 0.1
+        speed.angular.z = 0
+        turning = True
+    else:
+        speed.linear.x = 0
+    
+    """
+    #### sample code from web
     if abs(angle_to_goal - theta) > 0.1:
         speed.linear.x = 0.0
         speed.angular.z = 0.3
     else:
         speed.linear.x = 0.5
         speed.angular.z = 0.0
-
+    """
     pub.publish(speed)
     r.sleep()    
