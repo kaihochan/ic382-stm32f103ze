@@ -1,4 +1,5 @@
 ## type here for ubuntu things
+#!/usr/bin/env python
 
 import rospy
 from nav_msgs.msg import Odometry
