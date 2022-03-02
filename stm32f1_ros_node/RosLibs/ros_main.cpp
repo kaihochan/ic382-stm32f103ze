@@ -52,7 +52,6 @@ void cmd_vel_msg(const geometry_msgs::Twist& msg)
 	double motor1_pwm = twin_motors_duty_cycle.first;
 	double motor2_pwm = twin_motors_duty_cycle.second;
 	twin_motors_rotations.first == 0? motor_controller(MOTOR1,CLOCKWISE,motor1_pwm,max_register_value):motor_controller(MOTOR1,COUNTERCLOCKWISE,motor1_pwm,max_register_value);
-	// FILL IT IN BY YOURSELF (╯ ͡❛ ‿ ͡❛)╯┻━┻
 	
 	// Find v_L and v_R
 	v_L = (speed_linear + 0.5 * r_diameter * speed_angular);
@@ -111,12 +110,50 @@ void cmd_vel_msg(const geometry_msgs::Twist& msg)
 	HAL_GPIO_TogglePin(EXTENSION_LED1_GPIO_Port,EXTENSION_LED1_Pin);
 }
 
+
+// Linear stepping motor control (2 MAR 2022)
+void linear_step(char en=0, char dir=1, double_t ctr=500)
+{
+	if (en == 0)
+	{
+		HAL_GPIO_WritePin(LIN_ENA_GPIO_Port,LIN_ENA_Pin,GPIO_PIN_RESET);
+		return;
+	}
+		else if (en == 1)
+			HAL_GPIO_WritePin(LIN_ENA_GPIO_Port,LIN_ENA_Pin,GPIO_PIN_SET);
+	
+	if (dir == 1)
+		HAL_GPIO_WritePin(LIN_DIR_GPIO_Port,LIN_DIR_Pin,GPIO_PIN_SET);
+		else if (dir == 0)
+			HAL_GPIO_WritePin(LIN_DIR_GPIO_Port,LIN_DIR_Pin,GPIO_PIN_RESET);
+	
+	__HAL_TIM_SET_COMPARE(&htim4,TIM_CHANNEL_1,ctr);
+}
+
+
+// RC servo motor control (2 MAR 2022)
+void rc_servo(short ang, char ch=1)
+{
+	double_t ctr;
+	if (ang == 0)
+		ctr = 645;
+		else if (ang == 90)
+			ctr = 1520;
+			else if (ang == 180)
+				ctr = 2150;
+	
+	if (ch == 1)
+		__HAL_TIM_SET_COMPARE(&htim8,TIM_CHANNEL_1,ctr);
+		else if (ch == 2)
+			__HAL_TIM_SET_COMPARE(&htim8,TIM_CHANNEL_2,ctr);
+}
+
+
 // ROS cmd_vel Subscriber
 ros::Subscriber<geometry_msgs::Twist> velocity_sub("/cmd_vel", &cmd_vel_msg);
 
 void setup(void)
 {
-	
 	// Turn Off ALL Core Board LEDs (PULLED-HIGH)
 	HAL_GPIO_WritePin(CORE_LED0_GPIO_Port,CORE_LED0_Pin,GPIO_PIN_SET);
 	HAL_GPIO_WritePin(CORE_LED1_GPIO_Port,CORE_LED1_Pin,GPIO_PIN_SET);
@@ -144,19 +181,16 @@ void setup(void)
 	HAL_TIM_PWM_Start(&htim5, TIM_CHANNEL_1);
 	HAL_TIM_PWM_Start(&htim5, TIM_CHANNEL_2);
 	
-	// ENABLE PWM FOR MOTOR 3 AND 4 (TOP MODULE)
-	HAL_TIM_PWM_Start(&htim5, TIM_CHANNEL_3);
-	HAL_TIM_PWM_Start(&htim5, TIM_CHANNEL_4);
-	
 	// ENABLE ENCODER FOR MOTOR 1 AND 2 (WHEEL)
 	HAL_TIM_Encoder_Start(&htim1, TIM_CHANNEL_ALL);
 	HAL_TIM_Encoder_Start(&htim3, TIM_CHANNEL_ALL);
 	
-	// ENABLE ENCODER FOR MOTOR 3 AND 4 (TOP MODULE)
-	HAL_TIM_Encoder_Start(&htim4, TIM_CHANNEL_ALL);
-	HAL_TIM_Encoder_Start(&htim8, TIM_CHANNEL_ALL);
+	// ENABLE PWM FOR LINEAR STEPPING MOTOR
+	HAL_TIM_Encoder_Start(&htim4, TIM_CHANNEL_1);
 	
-	// FILL IT IN BY YOURSELF (╯ ͡❛ ‿ ͡❛)╯┻━┻
+	// ENABLE PWM1 AND PWM2 FOR RC SERVO MOTOR
+	HAL_TIM_Encoder_Start(&htim8, TIM_CHANNEL_1);
+	HAL_TIM_Encoder_Start(&htim8, TIM_CHANNEL_2);
 }
 
 
