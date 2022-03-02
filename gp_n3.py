@@ -45,16 +45,22 @@ while not rospy.is_shutdown():
 
     if inc_x != 0:
         speed.linear.x = 0.1
+        speed.angular.z = 0
     elif (inc_x = 0) & (inc_y != 0) & (turning = True):
         speed.linear.x = 0.1
+        speed.angular.z = 0
     elif (inc_x = 0) & (inc_y != 0) & (turning = False):
         speed.linear.x = 0
+        speed.angular.z = 0
         while abs(angle_to_goal - theta) > 0.1:
+            speed.linear.x = 0
             speed.angular.z = 0.1
+        speed.linear.x = 0
         speed.angular.z = 0
         turning = True
     else:
         speed.linear.x = 0
+        speed.angular.z = 0
     
     """
     #### sample code from web
