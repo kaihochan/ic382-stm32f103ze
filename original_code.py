@@ -49,6 +49,3 @@ while not rospy.is_shutdown():
 
     pub.publish(speed)
     r.sleep()
-
-while True:
-	print(2)
