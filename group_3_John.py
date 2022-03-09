@@ -35,16 +35,16 @@ Finish = False
 
 goal = Point()
 goal.x = 0
-goal.y = 5
+goal.y = 8
 
 goal2 = Point()
-goal2.x = 5
-goal2.y = 5
+goal2.x = 8
+goal2.y = 8
 
-def CombinedMovement(ang_to_goal, phi):
+def CombinedMovement(ang_to_goal, phi, speed_ang_z):
         if abs(ang_to_goal - phi) > 0.1:
                 speed.linear.x = 0.0
-                speed.angular.z = 0.3
+                speed.angular.z = speed_ang_z
         else:
                 speed.linear.x = 0.5
                 speed.angular.z = 0.0
@@ -70,13 +70,13 @@ while not rospy.is_shutdown():
         #----------------------------------------
         
         if Turned == False:
-                CombinedMovement(angle_to_goal, theta)
-                if abs(inc_y) < 0.1:
+                CombinedMovement(angle_to_goal, theta, 0.3)
+                if abs(inc_y) < 0.05:
                         Turned = True
                         StopMovement()
         elif Turned == True:
-                CombinedMovement(angle_to_goal2, theta)
-                if abs(inc_x2) < 0.1:
+                CombinedMovement(angle_to_goal2, theta, -0.3)
+                if abs(inc_x2) < 0.05:
                         Finish = True
                         StopMovement()
         elif Finish == True:
