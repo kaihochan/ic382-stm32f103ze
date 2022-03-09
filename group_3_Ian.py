@@ -31,8 +31,8 @@ speed = Twist()
 r = rospy.Rate(4)
 
 goal = Point()
-goal.x = 5
-goal.y = 1
+goal.x = 0
+goal.y = 2
 
 while not rospy.is_shutdown():
     inc_x = goal.x -x
@@ -48,7 +48,7 @@ while not rospy.is_shutdown():
 
     if abs(angle_to_goal - theta) > 0.1:
         speed.linear.x = 0.0
-        speed.angular.z = 0.3
+        speed.angular.z = 0.5
     else:
         speed.linear.x = 0.5
         speed.angular.z = 0.0
@@ -56,6 +56,7 @@ while not rospy.is_shutdown():
     # This statement prevents the car from self-rotating when it arrive destination
     if inc_x < 0.1 and inc_y < 0.1:
         speed.angular.z = 0.0
+        goal.x = 3
 
     pub.publish(speed)
     r.sleep()
