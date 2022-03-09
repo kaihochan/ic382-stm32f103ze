@@ -47,13 +47,13 @@ while not rospy.is_shutdown():
         # -ve value -> car rotate clockwise
         #----------------------------------------
         
-        if inc_x != 0:
+        if ((inc_x != 0) & (inc_y != 0)):
                 speed.linear.x = 0.5
                 speed.angular.z = 0
         elif abs(angle_to_goal - theta) > 0.1:
                 speed.linear.x = 0.0
                 speed.angular.z = 0.3
-        elif inc_y != 0:
+        elif ((inc_y != 0) & (abs(inc_x) < 0.1)):
                 speed.linear.x = 0.5
                 speed.angular.z = 0
         else:
