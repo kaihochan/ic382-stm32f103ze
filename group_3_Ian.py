@@ -11,17 +11,17 @@ y = 0.0
 theta = 0.0
 
 def newOdom(msg):
-    global x
-    global y
-    global theta
+	global x
+	global y
+	global theta
 
-    x = msg.pose.pose.position.x
-    y = msg.pose.pose.position.y
+	x = msg.pose.pose.position.x
+	y = msg.pose.pose.position.y
 
-    rot_q = msg.pose.pose.orientation
-    (roll, pitch, theta) = euler_from_quaternion([rot_q.x, rot_q.y, rot_q.z, rot_q.w])
+	rot_q = msg.pose.pose.orientation
+	(roll, pitch, theta) = euler_from_quaternion([rot_q.x, rot_q.y, rot_q.z, rot_q.w])
 
-rospy.init_node("speed_controller")
+	rospy.init_node("speed_controller")
 
 sub = rospy.Subscriber("/odometry/filtered", Odometry, newOdom)
 pub = rospy.Publisher("/cmd_vel", Twist, queue_size = 1)
@@ -37,33 +37,33 @@ goal.y = 2
 step = 1    #This variale tells which coordinate to go to
 
 while not rospy.is_shutdown():
-    inc_x = goal.x -x
-    inc_y = goal.y -y
+	inc_x = goal.x -x
+	inc_y = goal.y -y
 
-    angle_to_goal = atan2(inc_y, inc_x)
+	angle_to_goal = atan2(inc_y, inc_x)
+	
+	#----------------------------------------
+	# speed.angular.z: 
+	# +ve value -> car rotate anti-clockwise
+	# -ve value -> car rotate clockwise
+	#----------------------------------------
+	
+	if abs(angle_to_goal - theta) > 0.1:
+		speed.linear.x = 0.0
+		speed.angular.z = 0.3
+	else:
+		speed.linear.x = 0.5
+		speed.angular.z = 0.0
+	
+	# This statement prevents the car from self-rotating when it arrive destination
+	if inc_x < 0.1 and inc_y < 0.1:
+		if step = 1:
+			step = 2
+		if step = 2:
+			goal.x = 3
+			goal.y = 2
+			step = 0
+		speed.angular.z = 0.0
 
-    #----------------------------------------
-    # speed.angular.z: 
-    # +ve value -> car rotate anti-clockwise
-    # -ve value -> car rotate clockwise
-    #----------------------------------------
-
-    if abs(angle_to_goal - theta) > 0.1:
-        speed.linear.x = 0.0
-        speed.angular.z = 0.3
-    else:
-        speed.linear.x = 0.5
-        speed.angular.z = 0.0
-
-    # This statement prevents the car from self-rotating when it arrive destination
-    if inc_x < 0.1 and inc_y < 0.1:
-        if step = 1:
-            step = 2
-        if step = 2:
-            goal.x = 3
-            goal.y = 2
-            step = 0
-        speed.angular.z = 0.0
-
-    pub.publish(speed)
-    r.sleep()
+	pub.publish(speed)
+	r.sleep()
