@@ -58,5 +58,5 @@ while not rospy.is_shutdown():
         if inc_x < 0.1 and inc_y < 0.1:
                 speed.angular.z = 0.0
 
-                pub.publish(speed)
-                r.sleep()
+        pub.publish(speed)
+        r.sleep()
