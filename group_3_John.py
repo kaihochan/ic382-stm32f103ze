@@ -30,16 +30,38 @@ speed = Twist()
 
 r = rospy.Rate(4)
 
+Turned = False
+Finish = False
+
 goal = Point()
 goal.x = 5
-goal.y = 1
+goal.y = 0
 
+goal2 = Point()
+goal2.x = 5
+goal2.y = 5
+
+def CombinedMovement(ang_to_goal, phi):
+        if abs(ang_to_goal - phi) > 0.1:
+                speed.linear.x = 0.0
+                speed.angular.z = 0.3
+        else:
+                speed.linear.x = 0.5
+                speed.angular.z = 0.0
+
+def StopMovement():
+        speed.linear.x = 0.0
+        speed.angular.z = 0.0
 
 while not rospy.is_shutdown():
         inc_x = goal.x -x
         inc_y = goal.y -y
+
+        inc_x2 = goal2.x -x
+        inc_y2 = goal2.y -y
         
         angle_to_goal = atan2(inc_y, inc_x)
+        angle_to_goal2 = atan2(inc_y2, inc_x2)
         
         #----------------------------------------
         # speed.angular.z: 
@@ -47,18 +69,18 @@ while not rospy.is_shutdown():
         # -ve value -> car rotate clockwise
         #----------------------------------------
         
-        if ((inc_x != 0) & (inc_y != 0)):
-                speed.linear.x = 0.5
-                speed.angular.z = 0
-        elif abs(angle_to_goal - theta) > 0.1:
-                speed.linear.x = 0.0
-                speed.angular.z = 0.3
-        elif ((inc_y != 0) & (abs(inc_x) < 0.1)):
-                speed.linear.x = 0.5
-                speed.angular.z = 0
-        else:
-                speed.linear.x = 0
-                speed.angular.z = 0
+        if Turned == False:
+                CombinedMovement(angle_to_goal, theta)
+                if abs(inc_x) < 0.1:
+                        Turned = True
+                        StopMovement()
+        elif Turned == True:
+                CombinedMovement(angle_to_goal2, theta)
+                if abs(inc_y) < 0.1:
+                        Finish = True
+                        StopMovement()
+        elif Finish == True:
+                StopMovement()
         
         # This statement prevents the car from self-rotating when it arrive destination
         if inc_x < 0.1 and inc_y < 0.1:
