@@ -34,6 +34,8 @@ goal = Point()
 goal.x = 0
 goal.y = 2
 
+step = 1    #This variale tells which coordinate to go to
+
 while not rospy.is_shutdown():
     inc_x = goal.x -x
     inc_y = goal.y -y
@@ -48,15 +50,20 @@ while not rospy.is_shutdown():
 
     if abs(angle_to_goal - theta) > 0.1:
         speed.linear.x = 0.0
-        speed.angular.z = 0.5
+        speed.angular.z = 0.3
     else:
         speed.linear.x = 0.5
         speed.angular.z = 0.0
 
     # This statement prevents the car from self-rotating when it arrive destination
     if inc_x < 0.1 and inc_y < 0.1:
+        if step = 1:
+            step = 2
+        if step = 2:
+            goal.x = 3
+            goal.y = 2
+            step = 0
         speed.angular.z = 0.0
-        goal.x = 3
 
     pub.publish(speed)
     r.sleep()
