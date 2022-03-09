@@ -34,8 +34,8 @@ Turned = False
 Finish = False
 
 goal = Point()
-goal.x = 5
-goal.y = 0
+goal.x = 0
+goal.y = 5
 
 goal2 = Point()
 goal2.x = 5
@@ -71,20 +71,20 @@ while not rospy.is_shutdown():
         
         if Turned == False:
                 CombinedMovement(angle_to_goal, theta)
-                if abs(inc_x) < 0.1:
+                if abs(inc_y) < 0.1:
                         Turned = True
                         StopMovement()
         elif Turned == True:
                 CombinedMovement(angle_to_goal2, theta)
-                if abs(inc_y) < 0.1:
+                if abs(inc_x2) < 0.1:
                         Finish = True
                         StopMovement()
         elif Finish == True:
                 StopMovement()
         
         # This statement prevents the car from self-rotating when it arrive destination
-        if inc_x < 0.1 and inc_y < 0.1:
-                speed.angular.z = 0.0
+        #if inc_x < 0.1 and inc_y < 0.1:
+                #speed.angular.z = 0.0
 
         pub.publish(speed)
         r.sleep()
