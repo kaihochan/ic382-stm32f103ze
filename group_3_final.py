@@ -70,12 +70,12 @@ while not rospy.is_shutdown():
         #----------------------------------------
         
         if Turned == False:
-                CombinedMovement(angle_to_goal, theta, 0.3)
+                CombinedMovement(angle_to_goal, theta, 3)
                 if abs(inc_y) < 0.075:
                         Turned = True
                         StopMovement()
         elif Turned == True:
-                CombinedMovement(angle_to_goal2, theta, -0.3)
+                CombinedMovement(angle_to_goal2, theta, -3)
                 if abs(inc_x2) < 0.15:
                         Finish = True
                         StopMovement()
