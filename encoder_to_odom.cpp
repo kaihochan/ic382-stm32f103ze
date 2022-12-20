@@ -101,7 +101,7 @@ void EncoderCallback(const geometry_msgs::Vector3::ConstPtr& encoder_ticks)
 	
 	// Calculate orientation
     printf("dm1-dm2 = %f \r\n",(dm1-dm2));
-	dtheta = (dm2-dm1)*10/robot_wheel_seperation;
+	dtheta = (dm2-dm1)/robot_wheel_seperation;
 
     // Force compensate orientation
     dtheta = dtheta - 0;
