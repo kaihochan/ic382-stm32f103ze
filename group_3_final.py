@@ -43,10 +43,10 @@ goal2.y = 8
 
 def CombinedMovement(ang_to_goal, phi, speed_ang_z):
         if abs(ang_to_goal - phi) > 0.1:
-                speed.linear.x = 0.2
+                speed.linear.x = 5.0
                 speed.angular.z = speed_ang_z
         else:
-                speed.linear.x = 0.5
+                speed.linear.x = 7.0
                 speed.angular.z = 0.0
 
 def StopMovement():
