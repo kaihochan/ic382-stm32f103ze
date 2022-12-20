@@ -201,8 +201,9 @@ void loop(void)
 	HAL_GPIO_TogglePin(CORE_LED1_GPIO_Port,CORE_LED1_Pin);	
 	
 	// Get encoders values and publish
-	encoder_value_m1 = (uint32_t)(__HAL_TIM_GET_COUNTER(&htim4));
-	encoder_value_m2 = (uint32_t)(__HAL_TIM_GET_COUNTER(&htim5));
+	encoder_value_m1 = encoder_value_m2 = 0;
+	encoder_value_m1 = (uint32_t)(__HAL_TIM_GET_COUNTER(&htim1));
+	encoder_value_m2 = (uint32_t)(__HAL_TIM_GET_COUNTER(&htim3));
 	
 	// Push encoder value into p_value
 	encoder_value_m1_p = encoder_value_m1;
