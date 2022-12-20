@@ -1,4 +1,0 @@
-#!/usr/bin/env bash
-source /home/vtl-06/ic382_ws/devel/setup.bash
-
-rosrun mir_gazebo group_3.py

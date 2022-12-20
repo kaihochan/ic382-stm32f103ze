@@ -1,4 +1,0 @@
-#!/usr/bin/env bash
-source /home/vtl-06/ic382_ws/devel/setup.bash
-
-roslaunch mir_gazebo mir_maze_world.launch
