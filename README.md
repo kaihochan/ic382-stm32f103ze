@@ -1,5 +1,5 @@
 # ic382-stm32f103ze
-IC382, 2021-2022 Sem 2, Group N3
+IC382, 2021-2022 Sem 2, Group N3/S2-WM3
 
 Link to ros-main.cpp: [click here](https://github.com/kaihochan/ic382-stm32f103ze/blob/main/stm32f1_ros_node/RosLibs/ros_main.cpp)
 
