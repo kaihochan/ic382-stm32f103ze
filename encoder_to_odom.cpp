@@ -21,11 +21,11 @@ const int ros_update_hz = 1;                                   // in Hz
 
 // Robot physical parameters
 const double offset_distance_error = 0.0;                                                  // distance compensation default 3.58
-const double offset_theta_error = 0.0;                                                      // theta compensation default 0.18
-const double robot_wheel_seperation = 0.46;                                                   // in meter
-const double robot_wheel_radius = 0.06;                                                     // in meter
+const double offset_theta_error = 0.0343;                                                      // theta compensation default 0.18
+const double robot_wheel_seperation = 0.495;                                                   // in meter
+const double robot_wheel_radius = 0.0625;                                                     // in meter
 const double encoder_per_rotation_m1 = 2610.0;                                              // encoder value per rotation of motor1 [from 65535 - 65305]
-const double encoder_per_rotation_m2 = 2650.0;                                              // encoder value per rotation of motor2 [from 0 - 28911]
+const double encoder_per_rotation_m2 = 2610.0;                                              // encoder value per rotation of motor2 [from 0 - 28911]
 double distance_per_count_m1 = (double)(2*PI*robot_wheel_radius)/encoder_per_rotation_m1;    // Distance for an encoder pulse in m
 double distance_per_count_m2 = (double)(2*PI*robot_wheel_radius)/encoder_per_rotation_m2 ;   // Distance for an encoder pulse in m
 
@@ -94,7 +94,7 @@ void EncoderCallback(const geometry_msgs::Vector3::ConstPtr& encoder_ticks)
     printf("dm1: %f | dm2: %f | dtheta: %f\r\n",dm1,dm2,dtheta);
 
     // Force compensate two motor
-    dm1 = dm1 - offset_distance_error;
+    dm2 = dm2 - offset_distance_error;
 
 	// Calculate center turning curve
 	dc = (dm2+dm1)*0.5;
@@ -108,8 +108,8 @@ void EncoderCallback(const geometry_msgs::Vector3::ConstPtr& encoder_ticks)
 	
 	// Calculate seperate distance
     // *1.1 is only for speed up the visualization
-	dx = dc*cos(theta);
-	dy = dc*sin(theta);
+	dx = dc * cos(theta) * 100;
+	dy = dc * sin(theta) * 100;
 
 
 	// Handle angular z polarity
