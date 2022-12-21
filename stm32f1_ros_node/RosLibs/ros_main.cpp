@@ -60,7 +60,7 @@ void cmd_vel_msg(const geometry_msgs::Twist& msg)
 	// Find duty cycle
 	// if speed + error adjust > max speed, duty cycle = max counter
 	abs(v_L ) <= speed_max ? dutycy1 = abs(max_ctr_period * (v_L ) / speed_max) : dutycy1 = max_ctr_period;
-	abs(v_R ) <= speed_max ? dutycy2 = abs(max_ctr_period * 1.3 * (v_R ) / speed_max) : dutycy2 = max_ctr_period;
+	abs(v_R ) <= speed_max ? dutycy2 = abs(max_ctr_period * 1.27 * (v_R ) / speed_max) : dutycy2 = max_ctr_period;
 	
 	// GPIO enable motor
 	if (speed_linear > 0)
