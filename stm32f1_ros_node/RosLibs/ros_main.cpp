@@ -202,7 +202,7 @@ void loop(void)
 	
 	// Get encoders values and publish
 	encoder_value_m1 = encoder_value_m2 = 0;
-	encoder_value_m1 = (uint32_t)(__HAL_TIM_GET_COUNTER(&htim1));
+	encoder_value_m1 = 65535 - (uint32_t)(__HAL_TIM_GET_COUNTER(&htim1));
 	encoder_value_m2 = (uint32_t)(__HAL_TIM_GET_COUNTER(&htim3));
 	
 	// Push encoder value into p_value
