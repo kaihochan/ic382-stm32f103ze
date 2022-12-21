@@ -20,12 +20,12 @@ const int ros_update_hz = 1;                                   // in Hz
 
 
 // Robot physical parameters
-const double offset_distance_error = 3.580;                                                  // distance compensation
-const double offset_theta_error = 0.18;                                                      // theta compensation
+const double offset_distance_error = 0.0;                                                  // distance compensation default 3.58
+const double offset_theta_error = 0.0;                                                      // theta compensation default 0.18
 const double robot_wheel_seperation = 0.46;                                                   // in meter
 const double robot_wheel_radius = 0.06;                                                     // in meter
-const double encoder_per_rotation_m1 = 28911.0;                                              // encoder value per rotation of motor1 [from 65535 - 65305]
-const double encoder_per_rotation_m2 = 28911.0;                                              // encoder value per rotation of motor2 [from 0 - 28911]
+const double encoder_per_rotation_m1 = 2610.0;                                              // encoder value per rotation of motor1 [from 65535 - 65305]
+const double encoder_per_rotation_m2 = 2650.0;                                              // encoder value per rotation of motor2 [from 0 - 28911]
 double distance_per_count_m1 = (double)(2*PI*robot_wheel_radius)/encoder_per_rotation_m1;    // Distance for an encoder pulse in m
 double distance_per_count_m2 = (double)(2*PI*robot_wheel_radius)/encoder_per_rotation_m2 ;   // Distance for an encoder pulse in m
 
@@ -94,7 +94,7 @@ void EncoderCallback(const geometry_msgs::Vector3::ConstPtr& encoder_ticks)
     printf("dm1: %f | dm2: %f | dtheta: %f\r\n",dm1,dm2,dtheta);
 
     // Force compensate two motor
-    dm1 = dm1 - 0;
+    dm1 = dm1 - offset_distance_error;
 
 	// Calculate center turning curve
 	dc = (dm2+dm1)*0.5;
@@ -104,7 +104,7 @@ void EncoderCallback(const geometry_msgs::Vector3::ConstPtr& encoder_ticks)
 	dtheta = (dm2-dm1)/robot_wheel_seperation;
 
     // Force compensate orientation
-    dtheta = dtheta - 0;
+    dtheta = dtheta - offset_theta_error;
 	
 	// Calculate seperate distance
     // *1.1 is only for speed up the visualization
@@ -113,13 +113,24 @@ void EncoderCallback(const geometry_msgs::Vector3::ConstPtr& encoder_ticks)
 
 
 	// Handle angular z polarity
-	(angular_z<0)?dtheta=abs(dtheta)*-1:dtheta = abs(dtheta);
-    // Handle linear x polarity
-    if(linear_x<0)
+	//(angular_z<0)?dtheta=abs(dtheta)*-1:dtheta = abs(dtheta);
+	
+	if(angular_z < 0)
+		dtheta = abs(dtheta)*-1;
+	else if(angular_z > 0)
+		dtheta = abs(dtheta);
+    
+	// Handle linear x polarity
+    if(linear_x < 0)
     {
         dx=abs(dx)*-1;
         dy=abs(dy)*-1;
     }
+	else if(linear_x > 0)
+	{
+		dx = abs(dx);
+		dy = abs(dy);
+	}
 
 	printf("dx: %f | dy: %f | theta: %f\r\n",dx,dy,theta);
 
