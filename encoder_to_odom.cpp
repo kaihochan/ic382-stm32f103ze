@@ -16,7 +16,7 @@ const char odom_topic[] = "/odom";                             // subsriber
 const char speed_topic[] = "/cmd_vel";                         // subscriber
 const char source_link[] = "odom";                             // TF pair
 const char target_link[] = "base_link";                        // TF pair
-const int ros_update_hz = 1;                                   // in Hz
+const int ros_update_hz = 10;                                   // in Hz
 
 
 // Robot physical parameters
@@ -108,8 +108,8 @@ void EncoderCallback(const geometry_msgs::Vector3::ConstPtr& encoder_ticks)
 	
 	// Calculate seperate distance
     // *1.1 is only for speed up the visualization
-	dx = dc * cos(theta) * 100;
-	dy = dc * sin(theta) * 100;
+	dx = dc * cos(theta);
+	dy = dc * sin(theta);
 
 
 	// Handle angular z polarity
@@ -119,6 +119,8 @@ void EncoderCallback(const geometry_msgs::Vector3::ConstPtr& encoder_ticks)
 		dtheta = abs(dtheta)*-1;
 	else if(angular_z > 0)
 		dtheta = abs(dtheta);
+	else if(angular_z == 0)
+		dtheta = 0;
     
 	// Handle linear x polarity
     if(linear_x < 0)
@@ -141,8 +143,10 @@ void EncoderCallback(const geometry_msgs::Vector3::ConstPtr& encoder_ticks)
     if(encoder_ticks->y!=_y_tick)
 	(dy!=0)?y+=dy:y=y;
 
-    if(dtheta!=_theta)
-	(dtheta!=0)?theta+=dtheta:theta=theta;
+    if((dtheta!=_theta) && (theta<1.3))
+		(dtheta!=0)?theta+=dtheta:theta=theta;
+	else if((dtheta!=_theta) && (theta>=1.3))
+		theta = 1.57;
 
 	printf("pose x: %f | pose y: %f | pose theta: %f\r\n",x,y,theta);
 
@@ -206,6 +210,7 @@ int main(int argc, char **argv)
         odom_pub.publish(odom);
         last_time = current_time;
         ros::spinOnce();
+		r.sleep();
 
     }
     return 0;
